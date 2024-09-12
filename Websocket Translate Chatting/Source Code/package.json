@@ -12,6 +12,7 @@
   "description": "",
   "dependencies": {
     "express": "^4.21.0",
+    "websocket-translate-chatting": "file:",
     "ws": "^8.18.0"
   }
 }
