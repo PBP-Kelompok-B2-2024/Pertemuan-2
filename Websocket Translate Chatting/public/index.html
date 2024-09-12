@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-time Chat with Translation</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Modal for entering username -->
+    <div id="usernameModal" class="modal">
+        <div class="modal-content">
+            <h3>Enter your name and select your country</h3>
+            <input type="text" id="usernameInput" placeholder="Enter your name">
+            
+            <!-- Dropdown pilihan negara -->
+            <label for="countrySelect">Select your country:</label>
+            <select id="countrySelect">
+                <option value="us" data-flag="https://flagicons.lipis.dev/flags/4x3/us.svg">United States</option>
+                <option value="fr" data-flag="https://flagicons.lipis.dev/flags/4x3/fr.svg">France</option>
+                <option value="de" data-flag="https://flagicons.lipis.dev/flags/4x3/de.svg">Germany</option>
+                <option value="id" data-flag="https://flagicons.lipis.dev/flags/4x3/id.svg">Indonesia</option>
+                <option value="jp" data-flag="https://flagicons.lipis.dev/flags/4x3/jp.svg">Japan</option>
+                <option value="kr" data-flag="https://flagicons.lipis.dev/flags/4x3/kr.svg">Korea</option>
+                <option value="cn" data-flag="https://flagicons.lipis.dev/flags/4x3/cn.svg">China</option>
+                <option value="ru" data-flag="https://flagicons.lipis.dev/flags/4x3/ru.svg">Russia</option>
+                <option value="ar" data-flag="https://flagicons.lipis.dev/flags/4x3/ar.svg">Argentina</option>
+            </select>
+            
+            <button id="usernameSubmitBtn">Join Chat</button>
+        </div>
+    </div>
+
+    <!-- Judul besar di atas -->
+    <h1 id="appTitle" style="text-align: center; color: #0066cc;">Global Chat: Connect & Translate</h1>
+
+    <!-- Username saat ini -->
+    <h3 id="currentUsername" style="text-align: center; color: #333;">Username: </h3>
+
+    <div class="chat-container">
+        <div id="messages"></div>
+        <input type="text" id="messageInput" placeholder="Type a message">
+        <button id="sendBtn">Send</button>
+    </div>
+
+    <!-- Modal for translation options -->
+    <div id="translateModal" class="modal">
+        <div class="modal-content">
+            <h3>Select Source and Target Languages</h3>
+            <label for="sourceLang">Source Language:</label>
+            <select id="sourceLang">
+                <option value="en">English</option>
+                <option value="es">Spanish</option>
+                <option value="fr">French</option>
+                <option value="de">German</option>
+                <option value="id">Indonesian</option>
+                <option value="ja">Japanese</option>
+                <option value="ko">Korean</option>
+                <option value="zh">Chinese</option>
+                <option value="ru">Russian</option>
+                <option value="ar">Arabic</option>
+            </select>
+            <label for="targetLang">Target Language:</label>
+            <select id="targetLang">
+                <option value="en">English</option>
+                <option value="es">Spanish</option>
+                <option value="fr">French</option>
+                <option value="de">German</option>
+                <option value="id">Indonesian</option>
+                <option value="ja">Japanese</option>
+                <option value="ko">Korean</option>
+                <option value="zh">Chinese</option>
+                <option value="ru">Russian</option>
+                <option value="ar">Arabic</option>
+            </select>
+            <button id="translateBtn">Translate</button>
+            <button data-lang="close">Close</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
