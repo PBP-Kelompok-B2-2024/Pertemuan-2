@@ -48,6 +48,6 @@ wss.on('connection', (ws) => {
 
 // Start the server
 const port = 3000;
-server.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+server.listen(port, '10.10.129.150', () => {  // Use your IP address here
+    console.log(`Server is running on http://10.10.129.150:${port}`);
 });

@@ -1,4 +1,4 @@
-const ws = new WebSocket('ws://localhost:3000');
+const ws = new WebSocket('ws://10.10.129.150:3000');
 const messageInput = document.getElementById('messageInput');
 const sendBtn = document.getElementById('sendBtn');
 const messagesDiv = document.getElementById('messages');
@@ -47,8 +47,8 @@ if (!username) {
     usernameModal.style.display = 'block';
 }
 
-// Send message to WebSocket server with username
-sendBtn.addEventListener('click', () => {
+// Fungsi untuk mengirim pesan
+function sendMessage() {
     const message = messageInput.value;
     if (message && username && countryFlag) {
         console.log(`Sending countryFlag: ${countryFlag}`);  // Debug: log flag yang dikirim
@@ -56,9 +56,21 @@ sendBtn.addEventListener('click', () => {
         ws.send(messageData);
         messageInput.value = '';
     }
+}
+
+// Send message when "Send" button is clicked
+sendBtn.addEventListener('click', () => {
+    sendMessage();
 });
 
-// Listen for messages from WebSocket server
+// Send message when "Enter" key is pressed
+messageInput.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+        event.preventDefault();  // Mencegah default behavior dari Enter (seperti newline)
+        sendMessage();
+    }
+});
+
 // Listen for messages from WebSocket server
 ws.onmessage = async (event) => {
     let receivedData;
@@ -86,9 +98,15 @@ ws.onmessage = async (event) => {
 
     const messageElement = document.createElement('div');
     messageElement.classList.add('message');
-    
+
+    const flagElement = document.createElement('img');
+    flagElement.src = flagToShow;
+    flagElement.style.width = '15px';
+    flagElement.style.height = '12px';
+    flagElement.title = receivedCountry || 'Unknown Country';
+
     const messageTextElement = document.createElement('span');
-    messageTextElement.innerHTML = `<img src="${flagToShow}" style="width: 15px; height: 12px;" title="${receivedCountry || 'Unknown Country'}"> ${receivedUsername}: ${message}`;
+    messageTextElement.textContent = `${receivedUsername}: ${message}`;
     messageTextElement.style.color = getUsernameColor(receivedUsername);  // Warna unik untuk setiap username
 
     const translateBtn = document.createElement('button');
@@ -98,12 +116,11 @@ ws.onmessage = async (event) => {
         translateModal.style.display = 'block';  // Tampilkan modal terjemahan
     });
 
+    messageElement.appendChild(flagElement);  // Tambah elemen bendera
     messageElement.appendChild(messageTextElement);  // Tambah teks pesan
     messageElement.appendChild(translateBtn);  // Tambah tombol terjemahan
     messagesDiv.appendChild(messageElement);  // Tambah ke chat container
 };
-
-
 
 
 // Handle translation selection
