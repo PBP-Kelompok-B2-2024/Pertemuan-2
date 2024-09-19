@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Management Error Handling</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.3/css/jquery.dataTables.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        h1 {
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input, select {
+            padding: 10px;
+            width: 95%;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+        button:disabled {
+            background-color: #aaa;
+        }
+        .error {
+            color: red;
+        }
+        .result {
+            margin-top: 20px;
+        }
+        table {
+            width: 100%;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Simulasi Pengelolaan Inventaris</h1>
+
+        <!-- Form Input untuk Tambah Barang -->
+        <div>
+            <h2>Tambah Barang</h2>
+            <input type="text" id="itemName" placeholder="Masukkan nama barang" />
+            <input type="number" id="itemStock" placeholder="Masukkan stok barang" />
+            <input type="number" id="itemPrice" placeholder="Masukkan harga barang" />
+            <button id="addItemBtn">Tambah Barang</button>
+            <div id="inventoryResult" class="result"></div>
+            <div id="inventoryError" class="error"></div>
+        </div>
+
+        <!-- Tabel Data Inventaris -->
+        <hr/>
+        <div>
+            <h2>Tracker Aktivitas Inventaris</h2>
+            <table id="inventoryTable" class="display">
+                <thead>
+                    <tr>
+                        <th>Nama Barang</th>
+                        <th>Stok</th>
+                        <th>Harga</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Tombol untuk Mengambil Data dari API -->
+        <hr/>
+        <div>
+            <h2>Ambil Data Barang dari API</h2>
+            <button id="fetchItemBtn">Ambil Data Barang</button>
+            <div id="apiData" class="result"></div>
+            <div id="apiError" class="error"></div>
+        </div>
+
+        <hr/>
+
+        <!-- Tombol untuk Simulasi Error -->
+        <div>
+            <h2>Simulasi Error</h2>
+            <button id="simulateErrorBtn">Jalankan Simulasi Error</button>
+            <div id="errorResult" class="result"></div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
