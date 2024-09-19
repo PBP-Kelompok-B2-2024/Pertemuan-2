@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank Transaction Simulation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            margin: 20px;
+        }
+        input {
+            margin: 10px;
+        }
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Simulasi Transaksi Antar Akun</h1>
+        <div>
+            <label for="timeAtoB">Waktu Transfer Akun 1 ke Akun 2 (YYYY-MM-DD HH:MM:SS): </label>
+            <input type="text" id="timeAtoB">
+            <button onclick="scheduleTransferAtoB()">Jadwalkan Transfer Akun 1 ke Akun 2</button>
+        </div>
+        <div>
+            <label for="timeBtoA">Waktu Transfer Akun 2 ke Akun 1 (YYYY-MM-DD HH:MM:SS): </label>
+            <input type="text" id="timeBtoA">
+            <button onclick="scheduleTransferBtoA()">Jadwalkan Transfer Akun 2 ke Akun 1</button>
+        </div>
+
+        <h2>Transaksi yang Dijadwalkan</h2>
+        <table id="scheduledTransactionsTable">
+            <tr>
+                <th>Akun Asal</th>
+                <th>Akun Tujuan</th>
+                <th>Waktu Transaksi</th>
+            </tr>
+        </table>
+
+        <h2>Transaksi yang Selesai</h2>
+        <table id="completedTransactionsTable">
+            <tr>
+                <th>Akun Asal</th>
+                <th>Akun Tujuan</th>
+                <th>Waktu Transaksi</th>
+                <th>Status</th>
+            </tr>
+        </table>
+    </div>
+
+    <script>
+        function scheduleTransferAtoB() {
+            const time = document.getElementById('timeAtoB').value;
+            fetch(`/transferAtoB?time=${encodeURIComponent(time)}`)
+                .then(response => response.json())
+                .then(data => alert(data.message))
+                .catch(err => console.log(err));
+        }
+
+        function scheduleTransferBtoA() {
+            const time = document.getElementById('timeBtoA').value;
+            fetch(`/transferBtoA?time=${encodeURIComponent(time)}`)
+                .then(response => response.json())
+                .then(data => alert(data.message))
+                .catch(err => console.log(err));
+        }
+
+        function fetchTransactions() {
+            fetch('/transactions')
+                .then(response => response.json())
+                .then(data => {
+                    updateScheduledTransactionsTable(data.scheduledTransactions);
+                    updateCompletedTransactionsTable(data.completedTransactions);
+                })
+                .catch(err => console.log(err));
+        }
+
+        function updateScheduledTransactionsTable(transactions) {
+            const table = document.getElementById('scheduledTransactionsTable');
+            // Hapus semua baris kecuali header
+            while (table.rows.length > 1) {
+                table.deleteRow(1);
+            }
+            // Tambahkan transaksi yang dijadwalkan ke tabel
+            transactions.forEach(transaction => {
+                const row = table.insertRow();
+                row.insertCell(0).innerText = transaction.accountFrom;
+                row.insertCell(1).innerText = transaction.accountTo;
+                row.insertCell(2).innerText = transaction.transactionTime;
+            });
+        }
+
+        function updateCompletedTransactionsTable(transactions) {
+            const table = document.getElementById('completedTransactionsTable');
+            // Hapus semua baris kecuali header
+            while (table.rows.length > 1) {
+                table.deleteRow(1);
+            }
+            // Tambahkan transaksi yang selesai ke tabel
+            transactions.forEach(transaction => {
+                const row = table.insertRow();
+                row.insertCell(0).innerText = transaction.accountFrom;
+                row.insertCell(1).innerText = transaction.accountTo;
+                row.insertCell(2).innerText = transaction.transactionTime;
+                row.insertCell(3).innerText = transaction.status;
+            });
+        }
+
+        // Memperbarui daftar transaksi setiap detik
+        setInterval(fetchTransactions, 1000);
+    </script>
+</body>
+</html>
