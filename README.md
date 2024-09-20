@@ -1,7 +1,3 @@
-Berikut adalah draft README untuk Pertemuan 2 yang membahas dasar-dasar WebSocket dan cara kerjanya:
-
----
-
 # Pertemuan 2 PBP Praktik Kelompok B2
 
 ## Anggota Kelompok
