@@ -52,3 +52,183 @@ Eksperimen ini akan dilakukan dengan langkah-langkah berikut:
 ### **Kesimpulan:**
 
 Eksperimen ini berhasil menunjukkan bahwa penerapan **Event-Driven Programming** pada sistem transkripsi audio dapat memberikan peningkatan signifikan dalam hal efisiensi dan responsivitas. EDP memungkinkan setiap komponen sistem untuk bekerja secara asinkron dan hanya memproses data ketika event yang relevan terjadi, sehingga mencegah pemborosan sumber daya dan meningkatkan skalabilitas. **Output dari eksperimen ini sesuai dengan tujuan**, di mana sistem menjadi lebih efisien, hemat sumber daya, dan lebih responsif setelah menerapkan EDP.
+
+Berikut adalah penjelasan lengkap tentang **paradigma pemrograman** dan **konsep pemrograman** yang digunakan dalam proyek transkripsi audio berbasis **Event-Driven Programming (EDP)**, beserta contoh kode untuk setiap bagian.
+
+---
+
+### **Paradigma Pemrograman yang Digunakan**
+
+#### **1. Paradigma Event-Driven Programming (EDP)**
+
+**Event-Driven Programming (EDP)** adalah paradigma di mana alur kerja program ditentukan oleh event tertentu, baik dari input pengguna maupun event sistem lainnya. Dalam proyek ini, setiap komponen dalam sistem transkripsi audio bekerja ketika event tertentu dipicu. Misalnya, **Video Processor** memicu event **"Audio Ready"** ketika audio telah diekstraksi, dan **Transcriber** mendengarkan event ini untuk memulai proses transkripsi.
+
+##### **Kode:**
+
+```python
+def publish_audio_ready_event(audio_path):
+    connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+    channel = connection.channel()
+
+    # Publikasi event "Audio Ready" menggunakan RabbitMQ
+    channel.exchange_declare(exchange='audio_events', exchange_type='fanout')
+    channel.basic_publish(exchange='audio_events', routing_key='', body=audio_path)
+    print(f" [x] Audio ready event sent for audio: {audio_path}")
+    connection.close()
+
+def on_audio_ready(ch, method, properties, body):
+    audio_path = body.decode()
+    print(f" [x] Received audio ready event for audio: {audio_path}")
+
+    # Transcriber memulai proses transkripsi audio setelah menerima event
+    transcription = transcribe_audio_vosk(audio_path, 'vosk-model-small-en-us-0.15')
+    print(f" [x] Transcription completed: {transcription}")
+```
+
+**Penjelasan**:
+
+- Event **"Audio Ready"** dipublikasikan ketika file audio siap diproses.
+- **Transcriber** mendengarkan event tersebut, dan hanya mulai bekerja ketika event diterima, sehingga meningkatkan efisiensi dan membuat sistem asinkron.
+
+---
+
+#### **2. Paradigma Pemrograman Berorientasi Objek (OOP)**
+
+**OOP** adalah paradigma pemrograman di mana tugas-tugas dipisahkan ke dalam objek-objek yang berisi data (atribut) dan fungsionalitas (metode). Dalam proyek ini, setiap komponen seperti **Transcriber** dan **Video Processor** diimplementasikan sebagai objek terpisah dengan tanggung jawabnya masing-masing.
+
+##### **Kode:**
+
+```python
+class Transcriber:
+    def __init__(self, model_path):
+        self.model_path = model_path
+
+    def transcribe(self, audio_path):
+        transcription = transcribe_audio_vosk(audio_path, self.model_path)
+        print(f" [x] Transcription completed: {transcription}")
+        return transcription
+
+class VideoProcessor:
+    def __init__(self, video_path):
+        self.video_path = video_path
+
+    def extract_audio(self):
+        audio_path = self.video_path.replace('.mp4', '.wav')
+        # Logic untuk mengekstrak audio dari video
+        print(f" [x] Audio extracted: {audio_path}")
+        return audio_path
+```
+
+**Penjelasan**:
+
+- Setiap komponen dipisahkan sebagai objek. Ini memungkinkan **modularitas** dan **reusability**, di mana komponen-komponen tersebut bisa digunakan di berbagai konteks yang berbeda tanpa perubahan besar.
+
+---
+
+### **Konsep Pemrograman yang Digunakan**
+
+#### **1. Asynchronous Programming**
+
+**Asynchronous programming** memungkinkan sistem memproses tugas secara bersamaan tanpa harus menunggu satu sama lain. Dalam proyek ini, komponen seperti **Transcriber** tidak perlu menunggu **Video Processor** selesai mengekstrak audio. Sebaliknya, sistem akan menunggu event secara asinkron dan bereaksi begitu event diterima.
+
+##### **Kode:**
+
+```python
+import asyncio
+
+async def handle_event(audio_path):
+    await asyncio.sleep(1)  # Simulasi penundaan asinkron
+    print(f" [x] Processing audio: {audio_path}")
+    transcription = transcribe_audio_vosk(audio_path, 'vosk-model-small-en-us-0.15')
+    return transcription
+
+async def main():
+    audio_path = "audio_example.wav"
+    print(f" [x] Waiting for event to process {audio_path}")
+    transcription = await handle_event(audio_path)
+    print(f" [x] Transcription finished: {transcription}")
+
+# Menjalankan pemrosesan secara asinkron
+asyncio.run(main())
+```
+
+**Penjelasan**:
+
+- Proses asinkron digunakan di sini untuk memastikan bahwa sistem dapat menunggu dan memproses tugas lain tanpa terblokir oleh satu komponen yang belum selesai.
+
+---
+
+#### **2. Message Queuing dan Pub/Sub (Publish/Subscribe) Pattern**
+
+**Message queuing** dan pola **publish/subscribe (pub/sub)** digunakan untuk mengelola distribusi pesan antar komponen secara asinkron. RabbitMQ digunakan dalam proyek ini untuk mengatur aliran pesan, di mana event diterima dan diproses oleh komponen yang relevan.
+
+##### **Kode:**
+
+```python
+def publish_event(event_message, exchange_name):
+    connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+    channel = connection.channel()
+
+    # Mempublikasikan pesan ke exchange RabbitMQ
+    channel.exchange_declare(exchange=exchange_name, exchange_type='fanout')
+    channel.basic_publish(exchange=exchange_name, routing_key='', body=event_message)
+    print(f" [x] Event published: {event_message}")
+    connection.close()
+
+def listen_to_event(exchange_name):
+    connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+    channel = connection.channel()
+
+    # Berlangganan ke exchange dan mendengarkan event
+    channel.exchange_declare(exchange=exchange_name, exchange_type='fanout')
+    result = channel.queue_declare(queue='', exclusive=True)
+    queue_name = result.method.queue
+    channel.queue_bind(exchange=exchange_name, queue=queue_name)
+
+    def callback(ch, method, properties, body):
+        print(f" [x] Received event: {body.decode()}")
+
+    channel.basic_consume(queue=queue_name, on_message_callback=callback, auto_ack=True)
+    print(' [*] Waiting for events. To exit press CTRL+C')
+    channel.start_consuming()
+
+# Publikasi dan mendengarkan event
+publish_event("Audio Ready", 'audio_events')
+listen_to_event('audio_events')
+```
+
+**Penjelasan**:
+
+- **RabbitMQ** digunakan untuk mengimplementasikan sistem publish/subscribe di mana satu komponen mempublikasikan event dan komponen lain yang berlangganan event tersebut akan merespons ketika event diterima. Ini memungkinkan komunikasi antar komponen yang lebih modular dan asinkron.
+
+---
+
+#### **3. Loose Coupling**
+
+**Loose coupling** memastikan bahwa setiap komponen dalam sistem bekerja secara independen dan hanya berkomunikasi melalui event. Ini membuat sistem lebih fleksibel dan mudah untuk dikembangkan lebih lanjut karena setiap komponen bisa diganti atau diubah tanpa mempengaruhi komponen lain.
+
+##### **Kode:**
+
+```python
+def video_processor_publish(audio_path):
+    # Video Processor selesai memproses audio dan mempublikasikan event "Audio Ready"
+    publish_audio_ready_event(audio_path)
+
+def transcriber_subscribe():
+    # Transcriber mendengarkan event "Audio Ready"
+    listen_to_event('audio_events')
+
+# Video Processor memulai dan Transcriber mendengarkan event
+video_processor_publish("audio_example.wav")
+transcriber_subscribe()
+```
+
+**Penjelasan**:
+
+- Komponen seperti **Video Processor** dan **Transcriber** tidak saling terhubung secara langsung. Mereka hanya berkomunikasi melalui event yang dipublikasikan dan diterima. Ini membuat sistem lebih **loosely coupled** dan lebih mudah di-maintain.
+
+---
+
+### **Kesimpulan:**
+
+Dengan menggabungkan **Event-Driven Programming (EDP)**, **OOP**, **asynchronous programming**, **message queuing**, dan **loose coupling**, proyek transkripsi audio ini berhasil menciptakan sistem yang efisien, modular, dan scalable. Setiap komponen hanya bekerja saat diperlukan (berdasarkan event), sehingga sistem menjadi lebih responsif dan hemat sumber daya.
