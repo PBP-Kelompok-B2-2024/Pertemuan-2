@@ -351,12 +351,96 @@ Selanjutnya, kode diubah ke dalam TypeScript. Pada tahap ini, tipe ditambahkan u
 
 Pada tahap ini, dependency injection digunakan untuk mengelola produk di dalam kategori, yang merupakan hal umum pada aplikasi skala besar. Tujuannya adalah untuk memisahkan logika bisnis dari pengelolaan data.
 
-### 4. **Hasil dan Kesimpulan**
+### 4. Analisis Paradigma
 
-Eksperimen ini menunjukkan perbedaan signifikan antara kode dengan dynamic typing dan static typing:
+Migrasi dari **JavaScript** ke **TypeScript** melibatkan perubahan mendasar dalam cara paradigma pemrograman diterapkan, khususnya dalam empat pendekatan utama: **Object-Oriented Programming (OOP)**, **Functional Programming (FP)**, **Imperative Programming**, dan **Declarative Programming**.
 
-1. **Kesalahan Tipe Terdeteksi Lebih Awal**: Pada TypeScript, kesalahan terkait tipe data langsung terdeteksi pada saat kompilasi, bukan saat runtime seperti di JavaScript.
-2. **Modularitas dan Skalabilitas**: Penggunaan interface dan dependency injection memperlihatkan bagaimana TypeScript memfasilitasi pengelolaan dependensi yang lebih kompleks dalam proyek besar.
-3. **Keamanan Kode**: Dengan adanya tipe yang eksplisit dan validasi pada fungsi, kode menjadi lebih aman dan risiko bug berkurang drastis.
+### 4.1. **Object-Oriented Programming (OOP)**
 
-Dengan demikian, migrasi ke TypeScript menawarkan banyak keuntungan dalam skala besar, termasuk **pengurangan risiko kesalahan**, **pemeliharaan kode yang lebih mudah**, dan **peningkatan keandalan sistem**.
+### Sebelum Migrasi:
+
+JavaScript mendukung OOP melalui **prototypal inheritance**, di mana objek dapat menjadi template bagi objek lain tanpa menggunakan kelas seperti di bahasa pemrograman OOP tradisional. JavaScript memungkinkan pendekatan yang sangat dinamis, di mana tipe data tidak perlu dideklarasikan secara eksplisit, sehingga pengembang bisa dengan cepat membuat dan memperluas objek.
+
+### Setelah Migrasi:
+
+Dengan penerapan **static typing** melalui TypeScript, OOP di JavaScript menjadi lebih terstruktur. TypeScript memperkenalkan **class-based inheritance** yang lebih mirip dengan bahasa OOP tradisional seperti Java atau C++. Dengan konsep seperti **interfaces**, **abstract classes**, dan **access modifiers** (seperti `private`, `protected`, dan `public`), TypeScript memperkuat hubungan antar objek dan komponen.
+
+### Perbandingan:
+
+- **Kelebihan JavaScript:** Dinamis, fleksibel, dan cepat diimplementasikan tanpa harus mendeklarasikan tipe.
+- **Kekurangan JavaScript:** Rentan terhadap bug runtime yang sering kali sulit dilacak pada proyek skala besar.
+- **Kelebihan TypeScript:** Lebih modular, relasi antar objek lebih jelas, dan lebih aman karena ada pengecekan tipe saat kompilasi.
+- **Kekurangan TypeScript:** Kurang fleksibel, lebih verbose, dan memerlukan deklarasi tipe yang eksplisit.
+
+### 4.2. **Functional Programming (FP)**
+
+### Sebelum Migrasi:
+
+JavaScript secara alami mendukung **functional programming** dengan fitur seperti **higher-order functions** (misalnya, `map()`, `reduce()`, `filter()`). Dynamic typing membuat kode lebih ringkas dan memungkinkan pengembang membuat fungsi yang fleksibel tanpa harus menentukan tipe dari parameter dan hasil return secara eksplisit.
+
+### Setelah Migrasi:
+
+Dengan migrasi ke TypeScript, FP tetap dapat dilakukan, namun dengan adanya **static typing** pada parameter dan return value. TypeScript mendorong penggunaan **pure functions** dan memastikan bahwa setiap fungsi hanya menerima tipe data yang sesuai, sehingga mengurangi bug runtime.
+
+### Perbandingan:
+
+- **Kelebihan JavaScript:** Kode FP lebih fleksibel dan cepat untuk ditulis karena dynamic typing.
+- **Kekurangan JavaScript:** Dynamic typing meningkatkan risiko bug runtime, terutama ketika berhadapan dengan data yang kompleks.
+- **Kelebihan TypeScript:** Fungsi lebih aman karena setiap tipe harus didefinisikan, mengurangi potensi kesalahan tipe.
+- **Kekurangan TypeScript:** Kode menjadi lebih panjang dan eksplisit, mengurangi fleksibilitas.
+
+### 4.3. **Imperative Programming**
+
+### Sebelum Migrasi:
+
+JavaScript mendukung **imperative programming**, di mana instruksi ditulis secara eksplisit menggunakan loops, conditions, dan statements yang mengubah state program secara langsung. Dynamic typing di JavaScript membuat pendekatan ini lebih fleksibel.
+
+### Setelah Migrasi:
+
+Di TypeScript, paradigma imperatif tetap digunakan, namun dengan pengecekan tipe yang lebih ketat. Setiap variabel dalam loops atau conditions harus memiliki tipe yang jelas, sehingga meminimalkan bug terkait kesalahan tipe.
+
+### Perbandingan:
+
+- **Kelebihan JavaScript:** Dynamic typing membuat penulisan kode imperative lebih cepat dan fleksibel.
+- **Kekurangan JavaScript:** Kesalahan tipe sering kali tidak terdeteksi hingga runtime, terutama dalam aplikasi berskala besar.
+- **Kelebihan TypeScript:** Static typing memperkuat keamanan program dan memungkinkan optimisasi lebih baik saat kompilasi.
+- **Kekurangan TypeScript:** Deklarasi tipe yang eksplisit di setiap langkah imperatif membuat kode lebih verbose.
+
+### 4.4. **Declarative Programming**
+
+### Sebelum Migrasi:
+
+JavaScript memungkinkan pendekatan **declarative programming**, terutama melalui framework seperti **React**. Dalam pendekatan ini, developer lebih fokus pada "apa yang harus dilakukan" daripada "bagaimana melakukannya". Dynamic typing membuat pendekatan ini sangat fleksibel.
+
+### Setelah Migrasi:
+
+Setelah migrasi ke TypeScript, framework seperti **React** tetap menggunakan pendekatan deklaratif, namun dengan tambahan keamanan dari **static typing**. Developer diharuskan mendefinisikan tipe setiap komponen, properti, dan state secara eksplisit.
+
+### Perbandingan:
+
+- **Kelebihan JavaScript:** Deklaratif dan mudah diimplementasikan karena tidak ada deklarasi tipe yang menghalangi.
+- **Kekurangan JavaScript:** Dynamic typing dapat menyebabkan bug yang baru muncul saat runtime.
+- **Kelebihan TypeScript:** Type checking memastikan bahwa tipe komponen dan properti benar, mengurangi kesalahan runtime.
+- **Kekurangan TypeScript:** Kode deklaratif di TypeScript bisa lebih rumit karena adanya keharusan mendefinisikan tipe.
+
+### 5. **Hasil dan Kesimpulan**
+
+### 5.1. Hasil Eksperimen
+
+Eksperimen ini menunjukkan bahwa migrasi dari bahasa pemrograman **dynamic typing** (JavaScript) ke **static typing** (TypeScript) membawa perubahan signifikan dalam pengelolaan kode dan pengurangan kesalahan.
+
+1. **Deteksi Kesalahan yang Lebih Awal**: Dengan TypeScript, kesalahan terkait tipe data terdeteksi pada saat kompilasi, yang mengurangi risiko bug runtime yang umum terjadi dalam proyek besar yang menggunakan JavaScript. Hal ini terbukti menghemat waktu pengembangan dan mempercepat proses debugging.
+2. **Struktur Kode yang Lebih Jelas**: Migrasi ke TypeScript memungkinkan penulisan kode yang lebih terstruktur. Penambahan tipe pada class dan parameter memberikan kejelasan tentang data yang digunakan, sehingga mempermudah pengembangan kolaboratif antar developer. Penggunaan **interfaces** dan **abstract classes** juga memperkuat arsitektur OOP, menjadikan relasi antar objek lebih eksplisit.
+3. **Fleksibilitas dalam Pengembangan**: Walaupun TypeScript memberikan keuntungan dalam hal keamanan tipe, ada penurunan dalam fleksibilitas. Kode menjadi lebih verbose karena setiap tipe harus dideklarasikan, yang dapat memperlambat proses pengembangan, terutama dalam fase eksplorasi.
+4. **Efisiensi dalam Manajemen Inventori**: Penerapan **dependency injection** menunjukkan bahwa manajemen produk di dalam kategori dapat dilakukan dengan lebih efisien, yang merupakan praktik umum dalam aplikasi skala besar. Ini memungkinkan pemisahan logika bisnis dari pengelolaan data, membuat kode lebih modular dan mudah untuk diuji.
+
+### 5.2 Kesimpulan
+
+Migrasi dari JavaScript ke TypeScript dalam proyek skala besar membawa berbagai tantangan dan manfaat. Keuntungan utama yang diperoleh adalah:
+
+- **Keamanan dan Keandalan Kode**: TypeScript membantu memastikan bahwa kesalahan tipe data dapat dideteksi lebih awal, mengurangi risiko kesalahan runtime, dan meningkatkan keandalan sistem.
+- **Peningkatan Kolaborasi Tim**: Dengan tipe yang jelas, kolaborasi antara developer menjadi lebih efektif. Kode yang terstruktur memudahkan pemahaman dan pengelolaan kode oleh anggota tim yang berbeda.
+
+Namun, perlu diingat bahwa penggunaan TypeScript juga membawa beberapa kerugian, seperti berkurangnya fleksibilitas dan peningkatan kompleksitas dalam penulisan kode. Developer perlu menyeimbangkan antara keuntungan keamanan tipe dan kerugian terkait fleksibilitas, terutama dalam fase awal pengembangan.
+
+Secara keseluruhan, hasil eksperimen menunjukkan bahwa meskipun migrasi ini memerlukan usaha dan adaptasi, manfaat jangka panjang dari penggunaan TypeScript di proyek skala besar, khususnya dalam konteks manajemen produk dan inventori pada aplikasi e-commerce, sangat signifikan. Hal ini menandakan bahwa beralih ke static typing dapat menjadi langkah strategis untuk meningkatkan kualitas dan keberlanjutan kode dalam jangka panjang.
