@@ -27,6 +27,12 @@ Tujuan dari eksperimen ini adalah untuk menguji dan memahami penerapan **Event-D
 
 ### **Metodologi Eksperimen:**
 
+![Diagram Eksperimen](code/diagram.png)
+
+Detail gambar dapat diakses melalui link berikut: [Foto Diagram](https://mermaid.live/view#pako:eNqFlE9PwyAYxr8KIdltZvHPicMSEz2aLE49mF4YvFpiBxVepnPZdxfKVkvZYg9tgd_z8jwtsKPCSKCMOvj0oAXcKf5u-brSJFwtt6iEarlG8uzAEu66Zzm68KtGuTohfaPkXpQEQxbWCHDOdPSoq9Q8Wa6dsGqVqg-aJbv0K1TYAFlutYh01lHppJhMyBKhJZcsxfJtY7h0ZBOtzLiXyiQwjl7M532gwHcouY3MrLOeyB4J-CgRI_cb0MhS0lknPdQBmdS5rStWfCf4RssFOjIwN2JOTpxkye451SDdwWiy-Ahcbk_5u2bZP7EgQG3g4C00g4xArFR-moHu_GwDaCz5awwz5YIyz3G8RWX0-Vw3bLR-XLjV1mj1E9LhsEiZLFP-P3OGl_Ju-lz8pbAmgxWXVwgl4mJl8c_GZdwPV5pO6RrsmisZ9vkuiiuKNayhoiy8Sm4_KlrpfeC4RxPLUYbWw5T6VnI8ngnHTpAKjX1I50Z3fExp2HyvxvSINf69puyNNw72v-O7hUA)
+
+Eksperimen ini akan dilakukan dengan langkah-langkah berikut:
+
 - **Langkah 1:** Mengembangkan sistem yang memanfaatkan RabbitMQ sebagai **message broker** untuk menangani event-driven messaging antar komponen, seperti **Publisher**, **Video Processor**, **Transcriber**, dan **Subtitle Sync**.
   
 - **Langkah 2:** Mengimplementasikan **Vosk** untuk melakukan transkripsi audio secara offline dan **Pydub** untuk memanipulasi file audio (misalnya konversi stereo ke mono).
