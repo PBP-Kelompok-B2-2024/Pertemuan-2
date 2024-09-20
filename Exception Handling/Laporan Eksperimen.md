@@ -18,12 +18,51 @@ Di industri, aplikasi yang digunakan untuk mengelola data inventaris atau transa
 6. **Melakukan pengujian**: Setelah form rusak, pengguna mencoba memasukkan data valid, namun form tidak lagi dapat menambah barang ke tabel.
 
 ## Paradigma Pemrograman
-Paradigma pemrograman yang digunakan dalam eksperimen ini adalah **event-driven programming**. Paradigma ini berfokus pada pengaturan respons terhadap peristiwa (event) seperti klik tombol, perubahan input, atau kesalahan. Dalam eksperimen ini, event handler digunakan untuk merespons klik tombol "Tambah Barang" dan menangani kesalahan input pengguna. JavaScript mendukung event-driven programming, yang membuatnya cocok untuk pengembangan aplikasi berbasis web interaktif seperti form ini.
+
+Paradigma pemrograman yang digunakan dalam eksperimen ini adalah **event-driven programming**. Paradigma ini berfokus pada reaksi terhadap peristiwa (event) yang terjadi selama aplikasi berjalan. Dalam konteks web development, peristiwa yang umum ditemui adalah klik tombol, perubahan input di form, atau pemuatan halaman.
+
+Pada eksperimen ini, setiap kali pengguna berinteraksi dengan form, seperti mengklik tombol "Tambah Barang", sebuah event akan dihasilkan. Event ini dipantau oleh **event listener** yang sebelumnya telah disiapkan. Ketika event terdeteksi, handler terkait akan dieksekusi untuk melakukan tindakan tertentu, seperti mengambil data dari form, memvalidasinya, dan kemudian menambahkannya ke dalam tabel.
+
+Berikut adalah karakteristik dari **event-driven programming** yang muncul dalam eksperimen ini:
+1. **Listener**: Digunakan untuk mendeteksi peristiwa. Misalnya, event listener dipasang pada tombol "Tambah Barang" yang memonitor ketika tombol ini ditekan oleh pengguna.
+2. **Handler**: Merupakan fungsi yang dipanggil ketika event terjadi. Di eksperimen ini, handler bertugas untuk membaca input dari form, memprosesnya (memvalidasi dan mengelola error), dan menambah data ke tabel.
+3. **Event Flow yang Asinkron**: Event tidak harus dijalankan dalam urutan tertentu, tetapi berdasarkan kapan event itu terjadi. Misalnya, pengguna dapat mengisi form dalam urutan apa pun atau menekan tombol kapan saja, dan setiap kali tombol ditekan, event handler akan dipicu.
+
+Pendekatan ini membuat aplikasi lebih responsif dan interaktif, karena aplikasi akan bereaksi terhadap interaksi pengguna secara langsung dan tidak bergantung pada alur pemrograman linear seperti pada paradigma procedural programming.
 
 ## Konsep Pemrograman yang Digunakan
-1. **Event Handler**: Konsep ini digunakan untuk menangkap event seperti klik tombol. Ketika tombol "Tambah Barang" ditekan, event handler mengambil data dari form, memvalidasi, dan menambahkannya ke tabel.
-2. **Error Handling**: Penggunaan **try-catch** untuk menangkap kesalahan saat validasi data form. Jika terjadi kesalahan, pesan error akan ditampilkan di UI dan **console**, serta dapat merusak form dalam kondisi tertentu.
-3. **Global State**: Variabel global digunakan untuk menyimpan status apakah form rusak atau tidak. Ini menunjukkan bagaimana perubahan pada variabel global dapat memengaruhi fungsionalitas seluruh aplikasi.
+
+Beberapa konsep pemrograman yang digunakan dalam eksperimen ini antara lain:
+
+1. **Event Handler**:
+   - Event handler adalah fungsi yang merespons suatu event. Dalam eksperimen ini, event handler dipasang untuk memproses event **klik** pada tombol "Tambah Barang". Ketika tombol ditekan, event handler ini akan mengambil data dari form, melakukan validasi, dan jika valid, menambahkannya ke tabel tracker.
+   - Pada tahap ini, event handler tidak hanya bertugas menambah data, tetapi juga memastikan data tersebut valid sebelum dimasukkan ke dalam sistem. Jika ada kesalahan input, handler akan menangani error tersebut dan memberikan feedback yang sesuai kepada pengguna, misalnya melalui console log atau pesan error di UI.
+
+2. **Error Handling**:
+   - Error handling sangat penting untuk menjaga stabilitas aplikasi ketika terjadi kesalahan input atau kesalahan dalam proses. Dalam eksperimen ini, **error handling** dilakukan menggunakan blok **try-catch** untuk menangani kesalahan yang muncul saat proses validasi data. Jika ditemukan input yang tidak valid (misalnya field kosong atau angka yang tidak sesuai format), blok catch akan menangkap error tersebut dan mencegah eksekusi lebih lanjut yang dapat merusak fungsionalitas aplikasi.
+   - Error handling membantu mencegah situasi di mana data tidak valid, seperti **NaN** (Not a Number), dimasukkan ke dalam tabel. Tanpa mekanisme ini, data tidak valid bisa masuk ke sistem dan merusak integritas data inventaris.
+
+3. **Global State**:
+   - Variabel global digunakan untuk menyimpan status apakah form dalam kondisi rusak atau tidak. Jika terjadi error yang serius (misalnya, input yang sangat tidak valid atau error yang dibiarkan terjadi tanpa ditangani), form bisa menjadi rusak dan tidak bisa dipakai lagi.
+   - Dengan menggunakan variabel global untuk melacak status ini, kita bisa memantau kondisi form dan memblokir tindakan lebih lanjut jika form dalam keadaan tidak valid. Misalnya, ketika variabel global menunjukkan form rusak, pengguna tidak bisa lagi menambah barang ke dalam tabel, bahkan jika mereka memperbaiki input.
+
+4. **Data Validation**:
+   - Sebelum data dimasukkan ke dalam tabel, data harus divalidasi untuk memastikan bahwa semua input pengguna sudah benar. Jika input kosong atau tidak valid (misalnya, angka negatif untuk stok barang), sistem akan menolak untuk memprosesnya lebih lanjut.
+   - Validation ini sangat penting untuk mencegah data korup atau tidak valid masuk ke dalam sistem, yang dapat menyebabkan error lebih lanjut di masa mendatang.
+
+5. **DOM Manipulation**:
+   - Konsep ini muncul ketika data baru berhasil dimasukkan ke dalam tabel. Setelah validasi berhasil, program akan memanipulasi Document Object Model (DOM) untuk menambahkan baris baru ke tabel tracker menggunakan DataTables. Ini mencerminkan respons aplikasi yang dinamis, di mana tampilan web dapat diperbarui secara langsung berdasarkan interaksi pengguna.
+   
+   DOM manipulation digunakan untuk mengelola tampilan dan menambahkan elemen baru secara dinamis sesuai dengan input pengguna, memastikan bahwa tabel selalu menampilkan data terbaru.
+
+## Paradigma dan Konsep Pemrograman di Industri
+
+Dalam konteks industri, penerapan event-driven programming dan konsep-konsep di atas memberikan beberapa keuntungan:
+- **Responsif terhadap Pengguna**: Aplikasi akan lebih interaktif dan responsif terhadap tindakan pengguna, membuat pengalaman pengguna lebih baik.
+- **Reliabilitas Sistem**: Error handling dan validasi input menjaga integritas data dan meminimalkan risiko kesalahan yang dapat merusak sistem.
+- **Fleksibilitas Pengembangan**: Dengan event-driven programming, aplikasi dapat dikembangkan secara modular, di mana setiap event dapat diatur secara terpisah tanpa memengaruhi alur eksekusi utama aplikasi.
+
+Kesimpulannya, penerapan event-driven programming dan konsep-konsep ini dalam eksperimen dan dunia nyata memastikan bahwa aplikasi dapat berjalan dengan lancar, meskipun berhadapan dengan kesalahan input atau gangguan lain yang mungkin terjadi.
 
 ## Keuntungan dari Penerapan Eksperimen di Industri
 1. **Memperbaiki Keandalan Aplikasi**: Error handling yang tepat dapat mencegah aplikasi menerima data yang tidak valid dan menjaga kualitas data yang masuk ke sistem, terutama dalam pengelolaan inventaris.
